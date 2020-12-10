@@ -11,7 +11,8 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
-} catch (e) {}
+} catch (e) {
+}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -37,5 +38,14 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key: process.env.MIX_PUSHER_APP_KEY,
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    forceTLS: true
+    wsHost: window.location.hostname,
+    forceTLS: false,
+    wsPort: 6001,
+    disableStats: true,
 });
+// let userId = document.head.querySelector('meta[name="user-id"]').content;
+// window.Echo.private('App.User.' + userId)
+//     .notification((notification) => {
+//         console.log(notification.count);
+//         document.querySelector('.notiCount').innerText = notification.count;
+//     });

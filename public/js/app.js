@@ -1962,17 +1962,18 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.fetchMessages();
-    console.log(this.messages);
     Echo.join('chat').here(function (user) {
       _this.users = user;
     }).joining(function (user) {
       _this.users.push(user);
     }).leaving(function (user) {
-      _this.users = _this.user.filter(function (u) {
-        return u.id != user.id;
+      _this.users = _this.users.filter(function (u) {
+        return u.id !== user.id;
       });
     }).listen('MessageSent', function (event) {
-      _this.messages.push(event);
+      console.log(event);
+
+      _this.messages.push(event.message);
     });
   },
   methods: {
@@ -43705,7 +43706,7 @@ var render = function() {
               },
               _vm._l(_vm.messages, function(message, index) {
                 return _c("li", { key: index, staticClass: "p-2" }, [
-                  _c("strong", [_vm._v(_vm._s(message.user.name))]),
+                  _c("strong", [_vm._v(_vm._s(message.user["name"]))]),
                   _vm._v(
                     "\n                            " +
                       _vm._s(message.message) +
@@ -43761,9 +43762,15 @@ var render = function() {
           _c("div", { staticClass: "card-header" }, [_vm._v("Active Users")]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
-            _c("ul", [
-              _c("li", { staticClass: "py-2" }, [_vm._v(_vm._s(_vm.user.name))])
-            ])
+            _c(
+              "ul",
+              _vm._l(_vm.users, function(user) {
+                return _c("li", { staticClass: "py-2" }, [
+                  _vm._v(_vm._s(user.name))
+                ])
+              }),
+              0
+            )
           ])
         ])
       ])
@@ -56019,10 +56026,18 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "anyKey",
+  key: "anykey",
   cluster: "mt1",
-  forceTLS: true
-});
+  wsHost: window.location.hostname,
+  forceTLS: false,
+  wsPort: 6001,
+  disableStats: true
+}); // let userId = document.head.querySelector('meta[name="user-id"]').content;
+// window.Echo.private('App.User.' + userId)
+//     .notification((notification) => {
+//         console.log(notification.count);
+//         document.querySelector('.notiCount').innerText = notification.count;
+//     });
 
 /***/ }),
 
@@ -56113,8 +56128,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\sockets\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\sockets\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\websockets\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\websockets\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
