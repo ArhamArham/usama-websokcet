@@ -3,14 +3,16 @@ You Should do this for run
 
 composer install
 
+change .env.example to .env
+
 php artisan key:generate
 
 php artisan migrate
 
-php artisan websockets:serve
-
 npm install
 
-npm run watch
+php artisan websockets:serve
+
+npm run dev
 
 php artisan serve

@@ -100,6 +100,12 @@
                     message: this.newMessage
                 });
                 axios.post('messages', {message: this.newMessage})
+                    .catch(err => {
+                        if (err.response.status === 500) {
+                            this.$alertify.error('Please Enter Message')
+                            this.fetchMessages();
+                        }
+                    });
                 this.newMessage = '';
             },
 

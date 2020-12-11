@@ -8,7 +8,10 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 import VueChatScroll from 'vue-chat-scroll'
-Vue.use(VueChatScroll)
+import VueAlertify from 'vue-alertify';
+
+Vue.use(VueAlertify);
+Vue.use(VueChatScroll);
 
 /**
  * The following block of code may be used to automatically register your
