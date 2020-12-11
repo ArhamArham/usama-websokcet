@@ -5624,6 +5624,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user'],
   data: function data() {
@@ -5670,7 +5672,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     sendMessage: function sendMessage() {
-      var _this3 = this;
+      if (this.newMessage === '') {
+        this.$alertify.error('Please Enter Message');
+        return false;
+      }
 
       this.messages.push({
         user: this.user,
@@ -5678,12 +5683,6 @@ __webpack_require__.r(__webpack_exports__);
       });
       axios.post('messages', {
         message: this.newMessage
-      })["catch"](function (err) {
-        if (err.response.status === 500) {
-          _this3.$alertify.error('Please Enter Message');
-
-          _this3.fetchMessages();
-        }
       });
       this.newMessage = '';
     },
@@ -47568,7 +47567,7 @@ var render = function() {
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-12 col-md-8 order-10 order-lg-0" }, [
-        _c("div", { staticClass: "card card-default text-white" }, [
+        _c("div", { staticClass: "card shadow text-white" }, [
           _c("div", { staticClass: "card-header bg-dark" }, [
             _vm._v("Messages")
           ]),
@@ -47594,16 +47593,28 @@ var render = function() {
                   staticStyle: { height: "300px", "overflow-y": "scroll" }
                 },
                 _vm._l(_vm.messages, function(message, index) {
-                  return _c("li", { key: index, staticClass: "p-2" }, [
-                    _c("strong", [_vm._v(_vm._s(message.user.name) + " :")]),
-                    _vm._v(" "),
+                  return _c("li", { staticClass: "p-2" }, [
                     _c(
-                      "span",
+                      "div",
                       {
-                        staticClass: "p-2 bg-dark",
-                        staticStyle: { "border-radius": "10px" }
+                        class: {
+                          "text-right my-2": message.user.id !== _vm.user.id
+                        }
                       },
-                      [_vm._v(_vm._s(message.message))]
+                      [
+                        _c("strong", [
+                          _vm._v(_vm._s(message.user.name) + " :")
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          {
+                            staticClass: "p-2 bg-dark",
+                            staticStyle: { "border-radius": "10px" }
+                          },
+                          [_vm._v(_vm._s(message.message))]
+                        )
+                      ]
                     )
                   ])
                 }),
@@ -47659,7 +47670,7 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-12 col-md-4 my-3 mt-lg-0" }, [
-        _c("div", { staticClass: "card card-default" }, [
+        _c("div", { staticClass: "card shadow" }, [
           _c("div", { staticClass: "card-header bg-dark text-white" }, [
             _vm._v("Active Users")
           ]),

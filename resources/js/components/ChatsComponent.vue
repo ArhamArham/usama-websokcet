@@ -2,16 +2,18 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 order-10 order-lg-0">
-                <div class="card card-default text-white">
+                <div class="card shadow text-white">
                     <div class="card-header bg-dark">Messages</div>
                     <div class="card-body p-0" style="background-image: url('assets/images/bg.jpg');
                         background-size: contain;
                         background-position: center;">
 
                         <ul class="list-unstyled" style="height: 300px; overflow-y: scroll;" v-chat-scroll>
-                            <li class="p-2" v-for="(message, index) in messages" :key="index">
-                                <strong>{{ message.user.name }} :</strong>
-                                <span class="p-2 bg-dark" style="border-radius: 10px;">{{ message.message }}</span>
+                            <li class="p-2" v-for="(message, index) in messages">
+                                <div :class="{'text-right my-2' :message.user.id !== user.id}">
+                                    <strong>{{ message.user.name }} :</strong>
+                                    <span class="p-2 bg-dark" style="border-radius: 10px;">{{ message.message }}</span>
+                                </div>
                             </li>
                         </ul>
 
@@ -30,7 +32,7 @@
             </div>
 
             <div class="col-12 col-md-4 my-3 mt-lg-0">
-                <div class="card card-default">
+                <div class="card shadow">
                     <div class="card-header bg-dark text-white">Active Users</div>
                     <div class="card-body">
                         <ul>
@@ -95,17 +97,15 @@
             },
 
             sendMessage() {
+                if (this.newMessage === '') {
+                    this.$alertify.error('Please Enter Message')
+                    return false;
+                }
                 this.messages.push({
                     user: this.user,
                     message: this.newMessage
                 });
                 axios.post('messages', {message: this.newMessage})
-                    .catch(err => {
-                        if (err.response.status === 500) {
-                            this.$alertify.error('Please Enter Message')
-                            this.fetchMessages();
-                        }
-                    });
                 this.newMessage = '';
             },
 
