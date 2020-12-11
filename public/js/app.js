@@ -1962,17 +1962,16 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.fetchMessages();
-    console.log(this.messages);
     Echo.join('chat').here(function (user) {
       _this.users = user;
     }).joining(function (user) {
       _this.users.push(user);
     }).leaving(function (user) {
-      _this.users = _this.user.filter(function (u) {
-        return u.id != user.id;
+      _this.users = _this.users.filter(function (u) {
+        return u.id !== user.id;
       });
     }).listen('MessageSent', function (event) {
-      _this.messages.push(event);
+      _this.messages.push(event.message);
     });
   },
   methods: {
@@ -43761,9 +43760,15 @@ var render = function() {
           _c("div", { staticClass: "card-header" }, [_vm._v("Active Users")]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
-            _c("ul", [
-              _c("li", { staticClass: "py-2" }, [_vm._v(_vm._s(_vm.user.name))])
-            ])
+            _c(
+              "ul",
+              _vm._l(_vm.users, function(user) {
+                return _c("li", { staticClass: "py-2" }, [
+                  _vm._v(_vm._s(user.name))
+                ])
+              }),
+              0
+            )
           ])
         ])
       ])
@@ -56021,7 +56026,10 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   key: "anyKey",
   cluster: "mt1",
-  forceTLS: true
+  forceTLS: false,
+  wsHost: window.location.hostname,
+  wsPort: 6001,
+  disableStats: true
 });
 
 /***/ }),
@@ -56113,8 +56121,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\sockets\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\sockets\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\websockets\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\websockets\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

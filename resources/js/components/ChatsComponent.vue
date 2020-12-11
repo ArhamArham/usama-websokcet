@@ -29,7 +29,7 @@
                     <div class="card-header">Active Users</div>
                     <div class="card-body">
                         <ul>
-                            <li class="py-2">{{ user.name }}</li>
+                            <li class="py-2" v-for="user in users">{{ user.name }}</li>
                         </ul>
                     </div>
                 </div>
@@ -52,7 +52,6 @@
 
         created() {
             this.fetchMessages();
-            console.log(this.messages)
             Echo.join('chat')
                 .here(user => {
                    this.users = user;
@@ -61,10 +60,12 @@
                     this.users.push(user);
                 })
                 .leaving(user => {
-                    this.users = this.user.filter(u => u.id != user.id)
+                    this.users = this.users.filter(function (u) {
+                      return u.id !== user.id
+                    })
                 })
             .listen('MessageSent', (event) => {
-                this.messages.push(event)
+                this.messages.push(event.message)
             })
         },
 
