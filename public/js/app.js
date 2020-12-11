@@ -1950,6 +1950,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user'],
   data: function data() {
@@ -43801,31 +43805,50 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-8" }, [
-        _c("div", { staticClass: "card card-default" }, [
-          _c("div", { staticClass: "card-header" }, [_vm._v("Messages")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body p-0" }, [
-            _c(
-              "ul",
-              {
-                directives: [{ name: "chat-scroll", rawName: "v-chat-scroll" }],
-                staticClass: "list-unstyled",
-                staticStyle: { height: "300px", "overflow-y": "scroll" }
-              },
-              _vm._l(_vm.messages, function(message, index) {
-                return _c("li", { key: index, staticClass: "p-2" }, [
-                  _c("strong", [_vm._v(_vm._s(message.user.name))]),
-                  _vm._v(
-                    "\n                            " +
-                      _vm._s(message.message) +
-                      "\n                        "
-                  )
-                ])
-              }),
-              0
-            )
+      _c("div", { staticClass: "col-12 col-md-8 order-10 order-lg-0" }, [
+        _c("div", { staticClass: "card card-default text-white" }, [
+          _c("div", { staticClass: "card-header bg-dark" }, [
+            _vm._v("Messages")
           ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "card-body p-0",
+              staticStyle: {
+                "background-image": "url('assets/images/bg.jpg')",
+                "background-size": "contain",
+                "background-position": "center"
+              }
+            },
+            [
+              _c(
+                "ul",
+                {
+                  directives: [
+                    { name: "chat-scroll", rawName: "v-chat-scroll" }
+                  ],
+                  staticClass: "list-unstyled",
+                  staticStyle: { height: "300px", "overflow-y": "scroll" }
+                },
+                _vm._l(_vm.messages, function(message, index) {
+                  return _c("li", { key: index, staticClass: "p-2" }, [
+                    _c("strong", [_vm._v(_vm._s(message.user.name) + " :")]),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass: "p-2 bg-dark",
+                        staticStyle: { "border-radius": "10px" }
+                      },
+                      [_vm._v(_vm._s(message.message))]
+                    )
+                  ])
+                }),
+                0
+              )
+            ]
+          ),
           _vm._v(" "),
           _c("input", {
             directives: [
@@ -43836,7 +43859,7 @@ var render = function() {
                 expression: "newMessage"
               }
             ],
-            staticClass: "form-control",
+            staticClass: "form-control bg-dark text-white",
             attrs: {
               type: "text",
               name: "message",
@@ -43873,9 +43896,11 @@ var render = function() {
           : _vm._e()
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-4" }, [
+      _c("div", { staticClass: "col-12 col-md-4 my-3 mt-lg-0" }, [
         _c("div", { staticClass: "card card-default" }, [
-          _c("div", { staticClass: "card-header" }, [_vm._v("Active Users")]),
+          _c("div", { staticClass: "card-header bg-dark text-white" }, [
+            _vm._v("Active Users")
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c(
