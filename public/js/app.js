@@ -5626,6 +5626,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['user'],
   data: function data() {
@@ -5634,18 +5636,27 @@ __webpack_require__.r(__webpack_exports__);
       newMessage: '',
       users: [],
       activeUser: false,
-      typingTimer: false
+      typingTimer: false,
+      timer: ''
     };
   },
   created: function created() {
     var _this = this;
 
     this.fetchMessages();
+    this.timer = setInterval(this.fetchMessages, 2000);
     Echo.join('chat').here(function (user) {
       _this.users = user;
     }).joining(function (user) {
       _this.users.push(user);
+
+      _this.$alertify.success(user.name + ' is joined room');
+
+      console.log(user.name + ' is joined room');
     }).leaving(function (user) {
+      _this.$alertify.error(user.name + ' is left room');
+
+      console.log(user.name + ' is left room');
       _this.users = _this.users.filter(function (u) {
         return u.id !== user.id;
       });
@@ -5660,7 +5671,7 @@ __webpack_require__.r(__webpack_exports__);
 
       _this.typingTimer = setTimeout(function () {
         _this.activeUser = false;
-      }, 3000);
+      }, 2000);
     });
   },
   methods: {
@@ -5688,6 +5699,24 @@ __webpack_require__.r(__webpack_exports__);
     },
     sendTypingEvent: function sendTypingEvent() {
       Echo.join('chat').whisper('typing', this.user);
+    },
+    clearAll: function clearAll() {
+      var _this3 = this;
+
+      axios.put('messages/status').then(function (response) {
+        _this3.$alertify.success(response.data.message);
+
+        _this3.fetchMessages();
+      });
+    },
+    clearMyMessage: function clearMyMessage() {
+      var _this4 = this;
+
+      axios.put('messages/status', this.messages).then(function (response) {
+        _this4.$alertify.success(response.data.message);
+
+        _this4.fetchMessages();
+      });
     }
   }
 });
@@ -47569,7 +47598,7 @@ var render = function() {
       _c("div", { staticClass: "col-12 col-md-8 order-10 order-lg-0" }, [
         _c("div", { staticClass: "card shadow text-white" }, [
           _c("div", { staticClass: "card-header bg-dark" }, [
-            _vm._v("Messages")
+            _vm._v("Chat Group")
           ]),
           _vm._v(" "),
           _c(
@@ -47592,13 +47621,13 @@ var render = function() {
                   staticClass: "list-unstyled",
                   staticStyle: { height: "300px", "overflow-y": "scroll" }
                 },
-                _vm._l(_vm.messages, function(message, index) {
+                _vm._l(_vm.messages, function(message) {
                   return _c("li", { staticClass: "p-2" }, [
                     _c(
                       "div",
                       {
                         class: {
-                          "text-right my-2": message.user.id !== _vm.user.id
+                          "text-right my-2": message.user.id === _vm.user.id
                         }
                       },
                       [
@@ -47684,6 +47713,24 @@ var render = function() {
                 ])
               }),
               0
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger btn-sm",
+                on: { click: _vm.clearAll }
+              },
+              [_vm._v("Clear All Chats")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger btn-sm",
+                on: { click: _vm.clearMyMessage }
+              },
+              [_vm._v("Clear My Messages")]
             )
           ])
         ])

@@ -3,14 +3,14 @@
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 order-10 order-lg-0">
                 <div class="card shadow text-white">
-                    <div class="card-header bg-dark">Messages</div>
+                    <div class="card-header bg-dark">Chat Group</div>
                     <div class="card-body p-0" style="background-image: url('assets/images/bg.jpg');
                         background-size: contain;
                         background-position: center;">
 
                         <ul class="list-unstyled" style="height: 300px; overflow-y: scroll;" v-chat-scroll>
-                            <li class="p-2" v-for="(message, index) in messages">
-                                <div :class="{'text-right my-2' :message.user.id !== user.id}">
+                            <li class="p-2" v-for="message in messages">
+                                <div :class="{'text-right my-2' :message.user.id === user.id}">
                                     <strong>{{ message.user.name }} :</strong>
                                     <span class="p-2 bg-dark" style="border-radius: 10px;">{{ message.message }}</span>
                                 </div>
@@ -38,6 +38,8 @@
                         <ul>
                             <li class="py-2" v-for="user in users">{{ user.name }}</li>
                         </ul>
+                        <button class="btn btn-danger btn-sm" @click="clearAll">Clear All Chats</button>
+                        <button class="btn btn-danger btn-sm" @click="clearMyMessage">Clear My Messages</button>
                     </div>
                 </div>
             </div>
@@ -55,20 +57,26 @@
                 newMessage: '',
                 users: [],
                 activeUser: false,
-                typingTimer: false
+                typingTimer: false,
+                timer : ''
             }
         },
 
         created() {
             this.fetchMessages();
+            this.timer = setInterval(this.fetchMessages, 2000);
             Echo.join('chat')
                 .here(user => {
                     this.users = user;
                 })
                 .joining(user => {
                     this.users.push(user);
+                    this.$alertify.success(user.name + ' is joined room');
+                    console.log(user.name + ' is joined room');
                 })
                 .leaving(user => {
+                    this.$alertify.error(user.name + ' is left room');
+                    console.log(user.name + ' is left room');
                     this.users = this.users.filter(function (u) {
                         return u.id !== user.id
                     })
@@ -85,7 +93,7 @@
 
                     this.typingTimer = setTimeout(() => {
                         this.activeUser = false
-                    }, 3000)
+                    }, 2000)
                 })
         },
 
@@ -112,6 +120,20 @@
             sendTypingEvent() {
                 Echo.join('chat')
                     .whisper('typing', this.user);
+            },
+
+            clearAll() {
+                axios.put('messages/status').then(response => {
+                    this.$alertify.success(response.data.message);
+                    this.fetchMessages();
+                })
+            },
+
+            clearMyMessage() {
+                axios.put('messages/status', this.messages).then(response => {
+                    this.$alertify.success(response.data.message);
+                    this.fetchMessages();
+                })
             }
         }
     }

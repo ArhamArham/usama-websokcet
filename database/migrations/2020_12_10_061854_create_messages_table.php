@@ -17,6 +17,7 @@ class CreateMessagesTable extends Migration
             $table->id();
             $table->unsignedInteger('user_id');
             $table->text('message');
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

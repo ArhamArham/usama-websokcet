@@ -18,9 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/chats', [App\Http\Controllers\ChatsController::class,'index']);
-Route::get('/messages', [App\Http\Controllers\ChatsController::class,'fetchMessages']);
-Route::post('/messages', [App\Http\Controllers\ChatsController::class,'sendMessage']);
+Route::get('/chats', [App\Http\Controllers\ChatsController::class, 'index']);
+Route::get('/messages', [App\Http\Controllers\ChatsController::class, 'fetchMessages']);
+Route::post('/messages', [App\Http\Controllers\ChatsController::class, 'sendMessage']);
+Route::put('/messages/status', [App\Http\Controllers\ChatsController::class, 'status']);
 
 
 Auth::routes();
