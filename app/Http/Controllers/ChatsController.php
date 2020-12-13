@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ClearMessage;
 use App\Models\Message;
 use DB;
 use Illuminate\Http\Request;
@@ -41,10 +42,12 @@ class ChatsController extends Controller
         if ($request->all() !== []) {
             $messages = Message::where('user_id', '=', auth()->user()->id);
             $messages->update(['status' => 0]);
+            broadcast(new ClearMessage());
             return response(['message' => 'Your messages has been cleared']);
         }
         $messages = Message::where('status', 1);
         $messages->update(['status' => 0]);
+        broadcast(new ClearMessage());
         return response(['message' => 'All messages has been cleared']);
     }
 }

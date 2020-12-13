@@ -58,13 +58,13 @@
                 users: [],
                 activeUser: false,
                 typingTimer: false,
-                timer : ''
+                timer: ''
             }
         },
 
         created() {
             this.fetchMessages();
-            this.timer = setInterval(this.fetchMessages, 2000);
+            // this.timer = setInterval(this.fetchMessages, 2000);
             Echo.join('chat')
                 .here(user => {
                     this.users = user;
@@ -83,6 +83,9 @@
                 })
                 .listen('MessageSent', (event) => {
                     this.messages.push(event.message)
+                })
+                .listen('ClearMessage', (event) => {
+                    this.fetchMessages()
                 })
                 .listenForWhisper('typing', user => {
                     this.activeUser = user;
@@ -125,14 +128,12 @@
             clearAll() {
                 axios.put('messages/status').then(response => {
                     this.$alertify.success(response.data.message);
-                    this.fetchMessages();
                 })
             },
 
             clearMyMessage() {
                 axios.put('messages/status', this.messages).then(response => {
                     this.$alertify.success(response.data.message);
-                    this.fetchMessages();
                 })
             }
         }

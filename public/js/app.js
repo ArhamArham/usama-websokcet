@@ -5643,8 +5643,8 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    this.fetchMessages();
-    this.timer = setInterval(this.fetchMessages, 2000);
+    this.fetchMessages(); // this.timer = setInterval(this.fetchMessages, 2000);
+
     Echo.join('chat').here(function (user) {
       _this.users = user;
     }).joining(function (user) {
@@ -5662,6 +5662,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     }).listen('MessageSent', function (event) {
       _this.messages.push(event.message);
+    }).listen('ClearMessage', function (event) {
+      _this.fetchMessages();
     }).listenForWhisper('typing', function (user) {
       _this.activeUser = user;
 
@@ -5705,8 +5707,6 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.put('messages/status').then(function (response) {
         _this3.$alertify.success(response.data.message);
-
-        _this3.fetchMessages();
       });
     },
     clearMyMessage: function clearMyMessage() {
@@ -5714,8 +5714,6 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.put('messages/status', this.messages).then(function (response) {
         _this4.$alertify.success(response.data.message);
-
-        _this4.fetchMessages();
       });
     }
   }
@@ -60093,8 +60091,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\websockets\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\websockets\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\websockets\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\websockets\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
